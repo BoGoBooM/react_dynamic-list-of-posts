@@ -63,31 +63,36 @@ export const App = () => {
               </div>
 
               <div className="b`lock" data-cy="MainContent">
-                {!selectedUser && (
-                  <p data-cy="NoSelectedUser">No user selected</p>
-                )}
+                {selectedUser && (
+                  <>
+                    {isLoading && <Loader />}
 
-                {isLoading && <Loader />}
+                    {isError && (
+                      <div
+                        className="notification is-danger"
+                        data-cy="PostsLoadingError"
+                      >
+                        Something went wrong!
+                      </div>
+                    )}
 
-                {isError && (
-                  <div
-                    className="notification is-danger"
-                    data-cy="PostsLoadingError"
-                  >
-                    Something went wrong!
-                  </div>
-                )}
+                    {!isError && posts.length === 0 && (
+                      <div
+                        className="notification is-warning"
+                        data-cy="NoPostsYet"
+                      >
+                        No posts yet
+                      </div>
+                    )}
 
-                {!isError && selectedUser && posts.length === 0 ? (
-                  <div className="notification is-warning" data-cy="NoPostsYet">
-                    No posts yet
-                  </div>
-                ) : (
-                  <PostsList
-                    posts={posts}
-                    selectedPost={selectedPost}
-                    handlePostSelect={setSelectedPost}
-                  />
+                    {!isLoading && !isError && posts.length > 0 && (
+                      <PostsList
+                        posts={posts}
+                        selectedPost={selectedPost}
+                        handlePostSelect={setSelectedPost}
+                      />
+                    )}
+                  </>
                 )}
               </div>
             </div>
